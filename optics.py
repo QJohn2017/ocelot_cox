@@ -13,7 +13,7 @@ def lattice_transfer_map_RT(lattice, energy):
         Tb = deepcopy(elem.transfer_map.t_mat_z_e(elem.l, E))
         Tb = sym_matrix_jit(Tb)
         Tc = conv_T_jit(Ta,Tb,Tc,Ra,Rb)
-        Ra = dot(Rb, Ra)
+        Ra = np.dot(Rb, Ra)
         E += elem.transfer_map.delta_e
         Ta = Tc
 
@@ -27,7 +27,7 @@ def lattice_transfer_map_R(lattice, energy):
     E = energy
     for i, elem in enumerate(lattice.sequence):
         Rb = elem.transfer_map.R(E)
-        Ra = dot(Rb, Ra)
+        Ra = np.dot(Rb, Ra)
         E += elem.transfer_map.delta_e
     lattice.R = Ra
 

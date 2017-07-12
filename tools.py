@@ -13,6 +13,7 @@ import ocelot as oclt
 from ocelot_cox import optics
 from scipy.constants import m_e,c,e
 from scipy.optimize import fmin
+from copy import deepcopy
 
 np.set_printoptions(precision=6, suppress=True, linewidth=120)
 
@@ -78,7 +79,7 @@ def make_beam(bm):
 
 	"""
 
-	p_array = oclt.ParticleArray()
+	p_array = oclt.ParticleArray(n=bm['Np'])
 
 	if 'Features' not in bm:
 		bm['Features'] = {}
@@ -111,7 +112,7 @@ def make_beam(bm):
 	parts0[3] = bm['Oy']*rnd.randn(bm['Np'])
 	parts0[5] = bm['dE']*rnd.randn(bm['Np'])
 
-	p_array.particles = parts0.T.flatten()
+	p_array.rparticles = parts0 #.T.flatten()
 	p_array.E = bm['E']
 	p_array.s = 0.0
 
@@ -165,7 +166,7 @@ def make_beam_sliced(bm,dg=0.002,div_chirp=None):
 	rnd_seeds = (rnd.rand(Nbeams)*1e7).astype('l')
 
 	for i in range(Nbeams):
-		beam = oclt.deepcopy(bm)
+		beam = deepcopy(bm)
 		beam['Np'] = part_per_slice[i]
 		beam['Q'] /= int(bm['Np']/beam['Np'])
 		beam['E'] = (nrg_sliced[i],nrg_sliced[i+1])
@@ -243,7 +244,7 @@ def make_beam_contin(bm, div_chirp=None):
 		parts0[1] = bm['Ox']*rnd.randn(bm['Np'])
 		parts0[3] = bm['Oy']*rnd.randn(bm['Np'])
 
-	p_array.particles = parts0.T.flatten()
+	p_array.rparticles = parts0 #.T.flatten()
 	p_array.s = 0.0
 	if 'Q' in bm:
 		p_array.q_array = (bm['Q']/bm['Np'])*np.ones(bm['Np'])
@@ -540,7 +541,7 @@ def insert_slit(p_arrays,cntr = 0.0, width=np.inf, comp='x'):
 		if indx.shape[0]==0:
 			to_pop.append(i)
 		else:
-			p_arrays[i].particles = p_arrays[i].particles \
+			p_arrays[i].rparticles = p_arrays[i].rparticles \
 			  .reshape((Num_loc,6))[indx,:].flatten()
 			p_arrays[i].q_array = p_arrays[i].q_array[indx]
 
@@ -651,8 +652,8 @@ def damp_particles(p_array, Rx,Ry):
 	s0 = p_array.s
 	Rx0, Ry0 = Rx(s0), Ry(s0)
 	indx = np.nonzero((np.abs(p_array.x())<Rx0)*(np.abs(p_array.y())<Ry0))[0]
-	p_array.particles = \
-	  p_array.particles.reshape((np.int(p_array.size()),6))[indx,:].flatten()
+	p_array.rparticles = p_array.rparticles[:,indx]
+#	  p_array.rparticles.reshape((np.int(p_array.size()),6))[:,indx] #.flatten()
 	p_array.q_array = p_array.q_array[indx]
 	Np = np.int(p_array.size())
 	return p_array, Np
