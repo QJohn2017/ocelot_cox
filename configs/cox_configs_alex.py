@@ -1,3 +1,24 @@
+# This file is a part of independent module for OCELOT beam tracking software
+# https://github.com/iagapov/ocelot
+
+# This module contains the functions needed for OCELOT to model 
+# the COXINEL experiment. In particular it deals with the broad-spectrum 
+# beam transport.
+# Copyright (C)  2017 Igor A. Andriyash <igor.andriyash@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 Drifts = {}
 QuadLengths = {}
 QuadGradients = {}
