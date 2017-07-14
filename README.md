@@ -23,7 +23,7 @@ Module is developed and supported by <cite>[Igor A Andriyash]</cite>
 
 Special thanks to 
 - <cite>[Sergey Tomin]</cite> for advices and code pieces 
-- <cite>[Alexandre‎Loulergue]</cite> for his advices and help with benchmarking
+- <cite>[Alexandre Loulergue]</cite> for his advices and help with benchmarking
 - <cite>[Martin Khojoyan]</cite> for help with benchmarking
 
 [OCELOT]:https://github.com/hightower8083/chimera
