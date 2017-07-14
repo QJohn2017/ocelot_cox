@@ -26,9 +26,9 @@ Special thanks to
 - <cite>[Alexandre‎Loulergue]</cite> for his advices and help with benchmarking
 - <cite>[Martin Khojoyan]</cite> for help with benchmarking
 
-[OCELOT]: https://github.com/hightower8083/chimera
-[CHIMERA]: https://github.com/iagapov/ocelot
-[Igor A Andriyash]: mailto: igor.andriyash@gmail.com
-[Sergey Tomin]: mailto: sergey.tomin@xfel.eu
-[Alexandre Loulergue]: mailto: alexandre.loulergue@synchrotron-soleil.fr
-[Martin Khojoyan]: mailto: martinkh@mail.ru
+[OCELOT]:https://github.com/hightower8083/chimera
+[CHIMERA]:https://github.com/iagapov/ocelot
+[Igor A Andriyash]:mailto: igor.andriyash@gmail.com
+[Sergey Tomin]:mailto: sergey.tomin@xfel.eu
+[Alexandre Loulergue]:mailto: alexandre.loulergue@synchrotron-soleil.fr
+[Martin Khojoyan]:mailto: martinkh@mail.ru
