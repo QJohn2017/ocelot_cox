@@ -297,11 +297,7 @@ def make_line(lattice_elements, cell_keys, BeamEnergy, BeamEnergy_ref):
 
 	"""
 
-	DriftObjs = {}
-	QuadObjs = {}
-	DipObjs = {}
 	LattObjs = {None:None,}
-	Latt = []
 	Ecorr = BeamEnergy_ref/BeamEnergy
 
 	for key in lattice_elements['Drifts'].keys():
@@ -327,7 +323,7 @@ def make_line(lattice_elements, cell_keys, BeamEnergy, BeamEnergy_ref):
 			e2 = 0.0;
 
 		LattObjs[key] = oclt.RBend( \
-		  l = lattice_elements['DipLengths'][key], 
+		  l = lattice_elements['DipLengths'][key],
 		  angle = lattice_elements['DipAngles'][key]*Ecorr )
 
 	for key in  ['IMG1','IMG2','IMG4','IMG5',]:
@@ -345,6 +341,47 @@ def make_line(lattice_elements, cell_keys, BeamEnergy, BeamEnergy_ref):
 	LattObjs = [LattObjs[key] for key in cell_keys]
 
 	return LattObjs
+
+def modify_lattice(LattObjs, lattice_elements, cell_keys):
+	"""
+	Makes a COXINEL-type transport line with drifts, dipoles,
+	quadrupoles, undulator and few screens
+
+	Parameters
+	----------
+	LattObjs : dictionary with cpbd.elements to be used as new reference
+	lattice_elements: dictionary which contains COXINEL elements 
+	  as defined in cox_configs (shoud include Drifts, QuadLengths, 
+	  QuadGradients, DipLengths, DipAngles,UndulConfigs)
+	cell_keys: list with the keys to define the lattice sequence
+
+	Returns
+	-------
+
+	See Also
+	--------
+     make_line
+	  cox_configs
+
+	"""
+
+	for key in lattice_elements['Drifts'].keys():
+		key_i = cell_keys.index(key)
+		lattice_elements['Drifts'][key] = LattObjs[key_i].l
+
+	for key in lattice_elements['QuadLengths'].keys():
+		key_i = cell_keys.index(key)
+		lattice_elements['QuadLengths'][key] = LattObjs[key_i].l
+		lattice_elements['QuadGradients'][key] = LattObjs[key_i].k1
+
+	for key in lattice_elements['DipLengths'].keys():
+		key_i = cell_keys.index(key)
+		lattice_elements['DipLengths'][key] = LattObjs[key_i].l
+
+	key_i = cell_keys.index('UNDL1')
+	lattice_elements['UndulConfigs']['Strength'] = LattObjs[key_i].Kx
+	lattice_elements['UndulConfigs']['NumPeriods'] = LattObjs[key_i].nperiods
+	lattice_elements['UndulConfigs']['Period'] = LattObjs[key_i].lperiod
 
 def make_shot(p_arrays, lattice_elements, cell_keys, \
   BeamEnergy_ref,start_key=None, stop_key=None, \
@@ -676,7 +713,8 @@ def print_latt_chars(latt_objs, BeamEnergy):
 	Prints some elements of the transport matrices
 	Parameters
 	----------
-	lat: MagneticLattice object
+	lat: LattObjs
+	  Magnetic lattice objects retuned by make_line
 	BeamEnergy : float
 	  Electron energy in GEVs
    """
@@ -696,15 +734,18 @@ R_par_str =\
  ( {:g}, {:g}, {:g}, {:g}, {:g}, {:g} )
 """
 
-def print_R(lat, BeamEnergy):
+def print_R(latt_objs, BeamEnergy):
 	"""
 	Prints some elements of the transport matrices
 	Parameters
 	----------
-	lat: MagneticLattice object
+	lat: LattObjs
+	  Magnetic lattice objects retuned by make_line
 	BeamEnergy : float
 	  Electron energy in GEVs
    """
+
+	lat = oclt.MagneticLattice(latt_objs,method=method)
 	optics.lattice_transfer_map_R(lat,BeamEnergy)
 
 	print(R_par_str.format(*lat.R.flatten()))
@@ -720,7 +761,6 @@ def supermatch_matrix(latt_objs,nrg,varz,MAG=True, printout=True):
 
 		optics.lattice_transfer_map_RT(lat, nrg)
 
-        
 		err = np.abs( lat.R[0,1])**2 + np.abs(lat.R[2,3] )**2 \
 		    + np.abs(lat.T[1,1,5])**2 + np.abs(lat.T[3,3,5])**2 \
 		    + (np.abs(lat.T[0,1,5])-np.abs(lat.T[2,3,5]))**2
