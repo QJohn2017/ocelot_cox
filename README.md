@@ -28,7 +28,7 @@ Special thanks to
 
 [OCELOT]:https://github.com/hightower8083/chimera
 [CHIMERA]:https://github.com/iagapov/ocelot
-[Igor A Andriyash]:mailto: igor.andriyash@gmail.com
-[Sergey Tomin]:mailto: sergey.tomin@xfel.eu
-[Alexandre Loulergue]:mailto: alexandre.loulergue@synchrotron-soleil.fr
-[Martin Khojoyan]:mailto: martinkh@mail.ru
+[Igor A Andriyash]:mailto:igor.andriyash@gmail.com
+[Sergey Tomin]:mailto:sergey.tomin@xfel.eu
+[Alexandre Loulergue]:mailto:alexandre.loulergue@synchrotron-soleil.fr
+[Martin Khojoyan]:mailto:martinkh@mail.ru
