@@ -19,7 +19,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import matplotlib.pyplot as plt
 import numpy as np
 import sys
 import ocelot as oclt
@@ -171,7 +170,7 @@ def make_beam_sliced(bm,dg=0.002,div_chirp=None):
 	E1 = bm['E'][0]
 	E2 = bm['E'][1]
 	nrg_sliced =  sliced_spectrum(E1,E2,dg=dg)
-	nrg_cntrs = 0.5*(nrg_sliced[1:]+nrg_sliced[:-1])
+	#nrg_cntrs = 0.5*(nrg_sliced[1:]+nrg_sliced[:-1])
 	Nbeams = nrg_sliced.shape[0]-1
 	part_per_slice = np.round(bm['Np'] \
 	  *(nrg_sliced[1:]-nrg_sliced[:-1]) \
@@ -212,7 +211,7 @@ def make_beam_contin(bm, div_chirp=None):
 	if 'Features' not in bm:
 		bm['Features'] = {}
 	if 'RandomSeed' not in bm['Features']:
-		bm['Features']['RandomSeed'] = int(rnd.rand()*1e7)
+		bm['Features']['RandomSeed'] = int(np.random.rand()*1e7)
 	rnd = np.random.RandomState(seed=bm['Features']['RandomSeed'])
 
 	E1 = bm['E'][0]
@@ -247,11 +246,11 @@ def make_beam_contin(bm, div_chirp=None):
 		pz0 = np.sqrt( (div_chirp/mc2_GeV)**2-1. )
 		pz = (p_array.E/mc2_GeV)*(1+parts0[5])
 
-		px =  bm['Ox']*pz0*rnd.randn(bm['Np'])
-		py =  bm['Oy']*pz0*rnd.randn(bm['Np'])
+#		px =  bm['Ox']*pz0*rnd.randn(bm['Np'])
+#		py =  bm['Oy']*pz0*rnd.randn(bm['Np'])
 
-		parts0[1] = bm['Ox']*rnd.randn(bm['Np'])*(pz0/pz)**1.4
-		parts0[3] = bm['Oy']*rnd.randn(bm['Np'])*(pz0/pz)**1.4
+		parts0[1] = bm['Ox']*rnd.randn(bm['Np'])*(pz0/pz)**0.75 #**1.4
+		parts0[3] = bm['Oy']*rnd.randn(bm['Np'])*(pz0/pz)**0.75 #**1.4
 
 	else:
 		parts0[1] = bm['Ox']*rnd.randn(bm['Np'])
@@ -323,8 +322,9 @@ def make_line(lattice_elements, cell_keys, BeamEnergy, BeamEnergy_ref):
 			e2 = 0.0;
 
 		LattObjs[key] = oclt.RBend( \
-		  l = lattice_elements['DipLengths'][key],
-		  angle = lattice_elements['DipAngles'][key]*Ecorr )
+		  l=lattice_elements['DipLengths'][key],
+		  angle=lattice_elements['DipAngles'][key]*Ecorr,\
+		  e1=e1, e2=e2 )
 
 	for key in  ['IMG1','IMG2','IMG4','IMG5',]:
 		LattObjs[key] = oclt.Marker()

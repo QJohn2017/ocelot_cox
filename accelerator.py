@@ -20,6 +20,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ocelot.gui.accelerator import *
+import matplotlib.pyplot as plt
 
 def plot_API(lat, legend=True,**kw_fig):
     fig = plt.figure(**kw_fig)
@@ -31,8 +32,6 @@ def plot_API(lat, legend=True,**kw_fig):
 
     ax_xy = fig.add_axes(rect2)  #left, bottom, width, height
     ax_el = fig.add_axes(rect3, sharex=ax_xy)
-
-    font_size = 16
 
     for ax in ax_xy, ax_el:
         if ax!=ax_el:
