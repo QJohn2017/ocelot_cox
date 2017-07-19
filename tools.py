@@ -591,8 +591,7 @@ def insert_slit(p_arrays,cntr = 0.0, width=np.inf, comp='x'):
 		if indx.shape[0]==0:
 			to_pop.append(i)
 		else:
-			p_arrays[i].rparticles = p_arrays[i].rparticles \
-			  .reshape((Num_loc,6))[indx,:].flatten()
+			p_arrays[i].rparticles = p_arrays[i].rparticles[:,indx]
 			p_arrays[i].q_array = p_arrays[i].q_array[indx]
 
 	for i in to_pop[::-1]: 
