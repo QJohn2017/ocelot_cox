@@ -19,6 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+lattice_elements = {}
 Drifts = {}
 QuadLengths = {}
 QuadGradients = {}
@@ -83,6 +84,13 @@ UndulConfigs['Strength'] = 1.7291
 UndulConfigs['NumPeriods'] = 50
 
 BeamEnergy_ref = 0.18
+
+lattice_elements['Drifts'] = Drifts
+lattice_elements['QuadLengths'] = QuadLengths
+lattice_elements['QuadGradients'] = QuadGradients
+lattice_elements['DipLengths'] = DipLengths
+lattice_elements['DipAngles'] = DipAngles
+lattice_elements['UndulConfigs'] = UndulConfigs
 
 latt_par_string = """
 ###############################
