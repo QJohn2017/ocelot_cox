@@ -69,6 +69,16 @@ QuadGradients['QEM2'] = 8.127195
 QuadGradients['QEM3'] = -4.970518
 QuadGradients['QEM4'] = 0.04438066
 
+QuadTilt = {}
+QuadTilt['QAP1'] = 0
+QuadTilt['QAP2'] = 0
+QuadTilt['QAP3'] = 0
+QuadTilt['QEM1'] = 0
+QuadTilt['QEM2'] = 0
+QuadTilt['QEM3'] = 0
+QuadTilt['QEM4'] = 0
+lattice_elements['QuadTilt'] = QuadTilt
+
 DipLengths['DIP1'] = 0.2
 DipLengths['DIP2'] = 0.2
 DipLengths['DIP3'] = 0.2

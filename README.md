@@ -15,7 +15,6 @@
 
 ### TODO:
 - 2nd order sliced beam alignment
-- beam transforms (diplacements, rotations)
 - space charge modeling of sliced beams
 - beam diags treatment tools (collect and plot)
 
