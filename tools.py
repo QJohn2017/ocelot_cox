@@ -42,7 +42,7 @@ R_126 = {5:.3g}, R_346 = {6:.3g}
 ################################
 """
 
-def sliced_spectrum(Emin,Emax,dg = 0.001,):
+def sliced_spectrum(Emin, Emax, dg):
     """
     Gets the array sliced with fixed relative width
 
@@ -64,9 +64,9 @@ def sliced_spectrum(Emin,Emax,dg = 0.001,):
 
     e_m = Emin
     e_p = Emin
-    nrg_sliced = [e_m,]
-    while e_p<=Emax:
-        e_p = e_m*(1+dg)
+    nrg_sliced = [e_m, ]
+    while e_p <= Emax:
+        e_p = e_m * (1+dg)
         nrg_sliced.append(e_p)
         e_m = e_p
     return np.array(nrg_sliced)
@@ -103,7 +103,7 @@ def make_beam(bm):
     if 'Y0' not in bm: bm['Y0'] = 0.
     if 'Z0' not in bm: bm['Z0'] = 0.
 
-    parts0 = np.zeros((6,bm['Np']))
+    parts0 = np.zeros((6, bm['Np']))
 
     if 'FlatX' in bm['Features']:
         parts0[0] = bm['X0'] + bm['Rx']*(2*rnd.rand(bm['Np'])-1)
@@ -120,9 +120,9 @@ def make_beam(bm):
     else:
         parts0[4] = bm['Z0'] + bm['Lz']*rnd.randn(bm['Np'])
 
-    parts0[1] = bm['Ox']*rnd.randn(bm['Np'])
-    parts0[3] = bm['Oy']*rnd.randn(bm['Np'])
-    parts0[5] = bm['dE']*rnd.randn(bm['Np'])
+    parts0[1] = bm['Ox'] * rnd.randn(bm['Np'])
+    parts0[3] = bm['Oy'] * rnd.randn(bm['Np'])
+    parts0[5] = bm['dE'] * rnd.randn(bm['Np'])
 
     p_array.rparticles = parts0 #.T.flatten()
     p_array.E = bm['E']
@@ -133,12 +133,13 @@ def make_beam(bm):
     p_array.z_c = 0.0
 
     if 'Q' in bm:
-        p_array.q_array = (bm['Q']/bm['Np'])*np.ones(bm['Np'])
+        p_array.q_array = (bm['Q']/bm['Np']) * np.ones(bm['Np'])
     else:
         p_array.q_array = np.ones(bm['Np'])
+
     return p_array
 
-def make_beam_sliced(bm,dg=0.002,div_chirp=None):
+def make_beam_sliced(bm, dg=0.002, div_chirp=None):
     """
     Makes a continuous spectrum beam as a list of slices
 
@@ -169,7 +170,7 @@ def make_beam_sliced(bm,dg=0.002,div_chirp=None):
 
     E1 = bm['E'][0]
     E2 = bm['E'][1]
-    nrg_sliced =  sliced_spectrum(E1,E2,dg=dg)
+    nrg_sliced =  sliced_spectrum(E1, E2, dg=dg)
     #nrg_cntrs = 0.5*(nrg_sliced[1:]+nrg_sliced[:-1])
     Nbeams = nrg_sliced.shape[0]-1
     part_per_slice = np.round(bm['Np'] \
@@ -180,10 +181,10 @@ def make_beam_sliced(bm,dg=0.002,div_chirp=None):
     for i in range(Nbeams):
         beam = deepcopy(bm)
         beam['Np'] = part_per_slice[i]
-        beam['Q'] /= int(bm['Np']/beam['Np'])
-        beam['E'] = (nrg_sliced[i],nrg_sliced[i+1])
+        beam['Q'] /= int(bm['Np'] / beam['Np'])
+        beam['E'] = (nrg_sliced[i], nrg_sliced[i+1])
         beam['Features']['RandomSeed'] = rnd_seeds[i]
-        p_arrays.append(make_beam_contin(beam,div_chirp=div_chirp))
+        p_arrays.append(make_beam_contin(beam, div_chirp=div_chirp))
     return p_arrays
 
 def make_beam_contin(bm, div_chirp=None):
@@ -216,14 +217,14 @@ def make_beam_contin(bm, div_chirp=None):
 
     E1 = bm['E'][0]
     E2 = bm['E'][1]
-    dE = (E2-E1)/(E2+E1)
-    p_array.E = 0.5*(E2+E1)
+    dE = (E2-E1) / (E2+E1)
+    p_array.E = 0.5 * (E2+E1)
 
     if 'X0' not in bm: bm['X0'] = 0.
     if 'Y0' not in bm: bm['Y0'] = 0.
     if 'Z0' not in bm: bm['Z0'] = 0.
 
-    parts0 = np.zeros((6,bm['Np']))
+    parts0 = np.zeros((6, bm['Np']))
 
     if 'FlatX' in bm['Features']:
         parts0[0] = bm['X0'] + bm['Rx']*(2*rnd.rand(bm['Np'])-1)
@@ -240,26 +241,26 @@ def make_beam_contin(bm, div_chirp=None):
     else:
         parts0[4] = bm['Z0'] + bm['Lz']*rnd.randn(bm['Np'])
 
-    parts0[5] = dE*(2*rnd.rand(bm['Np'])-1)
+    parts0[5] = dE * (2*rnd.rand(bm['Np'])-1)
 
-    if div_chirp!=None:
+    if div_chirp != None:
         pz0 = np.sqrt( (div_chirp/mc2_GeV)**2-1. )
-        pz = (p_array.E/mc2_GeV)*(1+parts0[5])
+        pz = (p_array.E/mc2_GeV) * (1+parts0[5])
 
 #       px =  bm['Ox']*pz0*rnd.randn(bm['Np'])
 #       py =  bm['Oy']*pz0*rnd.randn(bm['Np'])
 
-        parts0[1] = bm['Ox']*rnd.randn(bm['Np'])*(pz0/pz)**0.75 #**1.4
-        parts0[3] = bm['Oy']*rnd.randn(bm['Np'])*(pz0/pz)**0.75 #**1.4
+        parts0[1] = bm['Ox'] * rnd.randn(bm['Np']) * (pz0/pz)**0.75
+        parts0[3] = bm['Oy'] * rnd.randn(bm['Np']) * (pz0/pz)**0.75
 
     else:
-        parts0[1] = bm['Ox']*rnd.randn(bm['Np'])
-        parts0[3] = bm['Oy']*rnd.randn(bm['Np'])
+        parts0[1] = bm['Ox'] * rnd.randn(bm['Np'])
+        parts0[3] = bm['Oy'] * rnd.randn(bm['Np'])
 
     p_array.rparticles = parts0 #.T.flatten()
     p_array.s = 0.0
     if 'Q' in bm:
-        p_array.q_array = (bm['Q']/bm['Np'])*np.ones(bm['Np'])
+        p_array.q_array = (bm['Q']/bm['Np']) * np.ones(bm['Np'])
     else:
         p_array.q_array = np.ones(bm['Np'])
 
